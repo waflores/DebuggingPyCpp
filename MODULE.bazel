@@ -5,8 +5,11 @@
 # For more details, please check https://github.com/bazelbuild/bazel/issues/18958
 ###############################################################################
 module(version = "0.0.1", name = "debugging_py_cpp")
-bazel_dep(name = "pybind11_bazel", version = "3.00")
+bazel_dep(name = "platforms", version = "1.0.0")
+bazel_dep(name = "bazel_skylib", version = "1.9.0")
 
+
+bazel_dep(name = "pybind11_bazel", version = "3.0.0")
 # Examples of how to use pybind11_bazel
 # https://github.com/google/re2/tree/e38a588a09495409575df9ec5af55cdb61831bb5
 # https://github.com/5l1v3r1/re2/blob/a807e8a3aac2cc33c77b7071efea54fcabe38e0c/MODULE.bazel#L19
@@ -19,7 +22,7 @@ use_repo(cc_configure, "local_config_cc")
 bazel_dep(name = "rules_python", version = "1.8.3")
 python = use_extension("@rules_python//python/extensions:python.bzl", "python")
 python.toolchain(
-    python_version = "3.10",
+    python_version = "3.14",
     is_default = True,
 )
 

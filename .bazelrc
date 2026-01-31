@@ -8,22 +8,28 @@ common --enable_bzlmod --noenable_workspace
 
 common --noincompatible_disallow_empty_glob
 # Enable Debug Fission
-common --fission=yes
-common --compilation_mode=dbg
+# common --fission=yes
+# common --compilation_mode=dbg
 
 # Turn on all the strict error checking for CC
-common --copt=-g3  # Add more debug stuff
-common --copt=-pedantic-errors
+# common --copt=-g3  # Add more debug stuff
+# common --copt=-pedantic-errors
 
-common --cxxopt=-std=c++23
-common --cxxopt=-Weffc++
-common --cxxopt=-Wextra
-common --cxxopt=-Wconversion
-common --cxxopt=-Wsign-conversion
-common --cxxopt=-Werror
+# common --cxxopt=-std=c++23
+# common --cxxopt=-Weffc++
+# common --cxxopt=-Wextra
+# common --cxxopt=-Wconversion
+# common --cxxopt=-Wsign-conversion
+# common --cxxopt=-Werror
 
 # C Options
-common --conlyopt=-std=c23  # Needed for c programs and not angering c++ ones
+# common --conlyopt=-std=c23  # Needed for c programs and not angering c++ ones
+common:windows --cxxopt=/std:c++17
+common:windows --host_cxxopt=/std:c++17
+common:linux --cxxopt=-std=c++17
+common:linux --host_cxxopt=-std=c++17
+common:macos --cxxopt=-std=c++17
+common:macos --host_cxxopt=-std=c++17
 
 # Visual Studio 2022
 ## NOTE: We need to have WSL running in the background for some of the compilation process

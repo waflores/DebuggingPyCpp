@@ -2,7 +2,7 @@ import example
 
 
 def main():
-    print(example.add(1, 2))
+    print(f"running the example: {example.add(1, 2)}")
 
 
 if __name__ == "__main__":
