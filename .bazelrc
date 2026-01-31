@@ -1,46 +1,59 @@
-startup --windows_enable_symlinks # --host_jvm_args=-Djavax.net.ssl.trustStoreType=WINDOWS-ROOT
+# XXX: If only there were OS Specific Startup Options
+
+# Adding this option deals with SSL errors
+# --host_jvm_args=-Djavax.net.ssl.trustStoreType=WINDOWS-ROOT
+
+# Adding this option would shorten Windows paths
 # startup --output_user_root=C:/bzl
-common --enable_platform_specific_config --repo_env=LC_ALL="en_US.UTF-8"
-common --show_timestamps --verbose_failures
+
+# XXX: end wishlist of Startup Options
+
+# Starting with Bazel 8, Windows requires this flag in order
+# for symlinks to work properly (namely, so that sh_test with
+# py_binary as a data dependency gets symlinks that are executable)
+startup --windows_enable_symlinks
 
 # Enable Bzlmod for every Bazel command
 common --enable_bzlmod --noenable_workspace
 
+# This adds an implicit --config=<osname>
+# See docs for osname values
+# https://bazel.build/reference/command-line-reference#common_options-flag--enable_platform_specific_config
+common --enable_platform_specific_config --repo_env=LC_ALL="en_US.UTF-8"
+
+common --show_timestamps --verbose_failures
 common --noincompatible_disallow_empty_glob
+
 # Enable Debug Fission
-# common --fission=yes
-# common --compilation_mode=dbg
+common --fission=yes
+common --compilation_mode=dbg
 
 # Turn on all the strict error checking for CC
-# common --copt=-g3  # Add more debug stuff
-# common --copt=-pedantic-errors
+common:linux --copt=-g3  # Add more debug stuff
+common:linux --copt=-pedantic-errors
 
-# common --cxxopt=-std=c++23
-# common --cxxopt=-Weffc++
-# common --cxxopt=-Wextra
-# common --cxxopt=-Wconversion
-# common --cxxopt=-Wsign-conversion
-# common --cxxopt=-Werror
+common:linux --cxxopt=-std=c++23
+common:linux --cxxopt=-Weffc++
+common:linux --cxxopt=-Wextra
+common:linux --cxxopt=-Wconversion
+common:linux --cxxopt=-Wsign-conversion
+common:linux --cxxopt=-Werror
 
 # C Options
-# common --conlyopt=-std=c23  # Needed for c programs and not angering c++ ones
-common:windows --cxxopt=/std:c++17
-common:windows --host_cxxopt=/std:c++17
-common:linux --cxxopt=-std=c++17
-common:linux --host_cxxopt=-std=c++17
-common:macos --cxxopt=-std=c++17
-common:macos --host_cxxopt=-std=c++17
+common:linux --conlyopt=-std=c23  # Needed for c programs and not angering c++ ones
+
+common:windows --enable_runfiles # https://github.com/bazelbuild/bazel/issues/8843
 
 # Visual Studio 2022
 ## NOTE: We need to have WSL running in the background for some of the compilation process
-build:windows --define compiler=vs2022
-build:windows --cxxopt=/std:c++20  # Qt requires a C++17 compiler, and a suitable value for __cplusplus.
-build:windows --cxxopt=/Zc:__cplusplus #  On MSVC, you must pass the /Zc:__cplusplus option to the compiler.
-build:windows --cxxopt=/permissive-  # QtCore/qglobal.h(120): error C2338
-build:windows --cxxopt=/Zc:__cplusplus
-build:windows --copt=-DWIN32_LEAN_AND_MEAN
-build:windows --copt=-DNOGDI
-build:windows --host_copt=-DWIN32_LEAN_AND_MEAN
-build:windows --host_copt=-DNOGDI
+common:windows --define compiler=vs2022
+common:windows --cxxopt=/std:c++20  # Qt requires a C++17 compiler, and a suitable value for __cplusplus.
+common:windows --cxxopt=/Zc:__cplusplus #  On MSVC, you must pass the /Zc:__cplusplus option to the compiler.
+common:windows --cxxopt=/permissive-  # QtCore/qglobal.h(120): error C2338
+common:windows --cxxopt=/Zc:__cplusplus
+common:windows --copt=-DWIN32_LEAN_AND_MEAN
+common:windows --copt=-DNOGDI
+common:windows --host_copt=-DWIN32_LEAN_AND_MEAN
+common:windows --host_copt=-DNOGDI
+common:windows --host_cxxopt=/std:c++20
 
-common:windows --enable_runfiles # https://github.com/bazelbuild/bazel/issues/8843

@@ -8,7 +8,6 @@ module(version = "0.0.1", name = "debugging_py_cpp")
 bazel_dep(name = "platforms", version = "1.0.0")
 bazel_dep(name = "bazel_skylib", version = "1.9.0")
 
-
 bazel_dep(name = "pybind11_bazel", version = "3.0.0")
 # Examples of how to use pybind11_bazel
 # https://github.com/google/re2/tree/e38a588a09495409575df9ec5af55cdb61831bb5
@@ -35,3 +34,21 @@ use_repo(python, "python_versions")
 #     requirements_lock = "//python:requirements.txt",
 # )
 # use_repo(pip, "my_pip")
+
+bazel_dep(name = "rules_pkg", version = "1.2.0")
+
+bazel_dep(name = "rules_rust", version = "0.68.1")
+
+rust = use_extension("@rules_rust//rust:extensions.bzl", "rust")
+rust.toolchain(
+    edition = "2021",
+    versions = ["1.70.2"],
+)
+
+# use: https://github.com/typedb/bazel-distribution/commit/56b7181d60b3fa275541b6b8d6a41fb84eff79b8
+bazel_dep(name = "vaticle_bazel_distribution", dev_dependency = True)
+git_override(
+    module_name = "vaticle_bazel_distribution",
+    remote = "https://github.com/typedb/bazel-distribution.git",
+    commit = "56b7181d60b3fa275541b6b8d6a41fb84eff79b8",
+)
