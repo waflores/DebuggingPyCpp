@@ -1,0 +1,31 @@
+{
+	"extensions": {
+		"recommendations": [
+			"bazelbuild.vscode-bazel",
+			"stackbuild.bazel-stack-vscode",
+			"shardulm94.trailing-spaces",
+			"stuart.unique-window-colors"
+		]
+	},
+	"folders": [
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+		"workbench.colorCustomizations": {
+			// Inspired by: https://www.canva.com/colors/color-palettes/denim-clad-shutterbug/
+			"activityBar.background": "#151B25",
+			"titleBar.activeBackground": "#034687",
+			"titleBar.activeForeground": "#DBE8E1",
+		},
+		"files.associations": {
+			"*.json": "jsonc",
+			"*.h": "c",
+		},
+		"trailing-spaces.trimOnSave": true,
+		"[bazel]": {
+			"editor.formatOnSave": true
+		},
+	}
+}

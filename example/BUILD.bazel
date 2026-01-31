@@ -1,0 +1,16 @@
+load("@pybind11_bazel//:build_defs.bzl", "pybind_extension")
+load("@rules_python//python:defs.bzl", "py_binary")
+
+pybind_extension(
+    name = "example",
+    srcs = ["example.cpp"],
+)
+
+py_binary(
+    name = "use_example",
+    srcs = ["use_example.py"],
+    data = [":example"],
+    imports = [""],
+    legacy_create_init = False,
+    visibility = ["//visibility:public"],
+)
