@@ -10,7 +10,6 @@ py_binary(
     name = "use_example",
     srcs = ["use_example.py"],
     data = [":example"],
-    imports = [""],
     legacy_create_init = False,
     visibility = ["//visibility:public"],
 )

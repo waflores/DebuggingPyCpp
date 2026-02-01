@@ -27,25 +27,25 @@ python.toolchain(
 
 use_repo(python, "python_versions")
 
-# pip = use_extension("@rules_python//python/extensions:pip.bzl", "pip")
-# pip.parse(
-#     hub_name = "my_pip",
-#     python_version = "3.10",
-#     requirements_lock = "//python:requirements.txt",
-# )
-# use_repo(pip, "my_pip")
+pip = use_extension("@rules_python//python/extensions:pip.bzl", "pip")
+pip.parse(
+    hub_name = "pypi",
+    python_version = "3.14",
+    requirements_lock = "//:requirements_lock.txt",
+)
+use_repo(pip, "pypi")
 
 bazel_dep(name = "rules_pkg", version = "1.2.0")
 
+# This module sets out to create an installer target for deployment
 bazel_dep(name = "rules_rust", version = "0.68.1")
 
 rust = use_extension("@rules_rust//rust:extensions.bzl", "rust")
 rust.toolchain(
     edition = "2021",
-    versions = ["1.70.2"],
+    versions = ["1.93.0"],
 )
 
-# use: https://github.com/typedb/bazel-distribution/commit/56b7181d60b3fa275541b6b8d6a41fb84eff79b8
 bazel_dep(name = "vaticle_bazel_distribution", dev_dependency = True)
 git_override(
     module_name = "vaticle_bazel_distribution",
