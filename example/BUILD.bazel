@@ -1,5 +1,6 @@
 load("@pybind11_bazel//:build_defs.bzl", "pybind_extension")
 load("@rules_python//python:defs.bzl", "py_binary")
+load("@rules_cc//cc:defs.bzl", "cc_binary", "cc_library", "cc_test")
 
 pybind_extension(
     name = "example",
@@ -12,4 +13,18 @@ py_binary(
     data = [":example"],
     legacy_create_init = False,
     visibility = ["//visibility:public"],
+)
+
+# PyBind11 is C++ -> Python
+# Here's an idea for Python -> C++ https://docs.python.org/3/extending/embedding.html
+# https://github.com/pybind/pybind11/discussions/5667
+py_library(
+    name = "paths_pylib",
+    srcs = ["paths.py"],
+)
+cc_binary(
+    name = "do_read_header",
+    deps = ["@pybind11"],
+    srcs = ["do_read_header.cpp"],
+    data = [":paths_pylib"],
 )

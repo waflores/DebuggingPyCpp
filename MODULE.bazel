@@ -6,9 +6,21 @@
 ###############################################################################
 module(version = "0.0.1", name = "debugging_py_cpp")
 bazel_dep(name = "platforms", version = "1.0.0")
+bazel_dep(name = "rules_cc", version = "0.2.16")
 bazel_dep(name = "bazel_skylib", version = "1.9.0")
 
 bazel_dep(name = "pybind11_bazel", version = "3.0.0")
+
+http_archive = use_repo_rule("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
+
+http_archive(
+    name = "pybind11",
+    build_file = "@pybind11_bazel//:pybind11-BUILD.bazel",
+    sha256 = "201966a61dc826f1b1879a24a3317a1ec9214a918c8eb035be2f30c3e9cfbdcb",
+    strip_prefix = "pybind11-2.10.3",
+    urls = ["https://github.com/pybind/pybind11/archive/refs/tags/v2.10.3.zip"],
+)
+
 # Examples of how to use pybind11_bazel
 # https://github.com/google/re2/tree/e38a588a09495409575df9ec5af55cdb61831bb5
 # https://github.com/5l1v3r1/re2/blob/a807e8a3aac2cc33c77b7071efea54fcabe38e0c/MODULE.bazel#L19
@@ -46,6 +58,7 @@ rust.toolchain(
     versions = ["1.93.0"],
 )
 
+# Swiss army knife of installer tools
 bazel_dep(name = "vaticle_bazel_distribution", dev_dependency = True)
 git_override(
     module_name = "vaticle_bazel_distribution",
