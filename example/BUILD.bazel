@@ -4,14 +4,20 @@ load("@rules_cc//cc:defs.bzl", "cc_binary")
 
 pybind_extension(
     name = "example",
-    srcs = ["example.cpp"],
+    srcs = ["_example.cpp"],
+)
+
+py_library(
+    name = "example_pylib",
+    data = [":example"],
+    imports = ["."],
+    visibility = ["//visibility:public"],
 )
 
 py_binary(
     name = "use_example",
     srcs = ["use_example.py"],
-    data = [":example"],
-    # legacy_create_init = False,
+    deps = [":example_pylib"],
     visibility = ["//visibility:public"],
 )
 
