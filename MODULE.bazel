@@ -1,12 +1,7 @@
-###############################################################################
-# Bazel now uses Bzlmod by default to manage external dependencies.
-# Please consider migrating your external dependencies from WORKSPACE to MODULE.bazel.
-#
-# For more details, please check https://github.com/bazelbuild/bazel/issues/18958
-###############################################################################
-module(version = "0.0.1", name = "debugging_py_cpp")
+# buildifier: disable=module-docstring
+module(name = "debugging_py_cpp")
 bazel_dep(name = "platforms", version = "1.0.0")
-bazel_dep(name = "rules_cc", version = "0.2.16")
+bazel_dep(name = "rules_cc", version = "0.2.17")
 bazel_dep(name = "bazel_skylib", version = "1.9.0")
 
 bazel_dep(name = "pybind11_bazel", version = "3.0.0")
@@ -16,9 +11,9 @@ http_archive = use_repo_rule("@bazel_tools//tools/build_defs/repo:http.bzl", "ht
 http_archive(
     name = "pybind11",
     build_file = "@pybind11_bazel//:pybind11-BUILD.bazel",
-    sha256 = "201966a61dc826f1b1879a24a3317a1ec9214a918c8eb035be2f30c3e9cfbdcb",
-    strip_prefix = "pybind11-2.10.3",
-    urls = ["https://github.com/pybind/pybind11/archive/refs/tags/v2.10.3.zip"],
+    strip_prefix = "pybind11-3.0.2",
+    integrity = "sha256-43VNFupTa9yWjOFGT6gi4ZihIXiB0xvZvz0of+0rv0w=",
+    urls = ["https://github.com/pybind/pybind11/archive/refs/tags/v3.0.2.zip"],
 )
 
 # Examples of how to use pybind11_bazel
@@ -30,7 +25,7 @@ http_archive(
 cc_configure = use_extension("@bazel_tools//tools/cpp:cc_configure.bzl", "cc_configure_extension")
 use_repo(cc_configure, "local_config_cc")
 
-bazel_dep(name = "rules_python", version = "1.8.3")
+bazel_dep(name = "rules_python", version = "1.9.0-rc1")
 python = use_extension("@rules_python//python/extensions:python.bzl", "python")
 python.toolchain(
     python_version = "3.14",
@@ -65,3 +60,14 @@ git_override(
     remote = "https://github.com/typedb/bazel-distribution.git",
     commit = "56b7181d60b3fa275541b6b8d6a41fb84eff79b8",
 )
+
+# Hedron's Compile Commands Extractor for Bazel
+# https://github.com/hedronvision/bazel-compile-commands-extractor
+bazel_dep(name = "hedron_compile_commands", dev_dependency = True)
+git_override(
+    module_name = "hedron_compile_commands",
+    commit = "7fe1eab26d2b8eeb5e1c6a2f38bddb001e3f9696",
+    remote = "https://github.com/hedronvision/bazel-compile-commands-extractor.git",
+)
+# bazel run @hedron_compile_commands//:refresh_all
+

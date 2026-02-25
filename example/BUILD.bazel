@@ -1,6 +1,6 @@
 load("@pybind11_bazel//:build_defs.bzl", "pybind_extension")
-load("@rules_python//python:defs.bzl", "py_binary")
-load("@rules_cc//cc:defs.bzl", "cc_binary", "cc_library", "cc_test")
+load("@rules_python//python:defs.bzl", "py_binary", "py_library")
+load("@rules_cc//cc:defs.bzl", "cc_binary")
 
 pybind_extension(
     name = "example",
@@ -11,7 +11,7 @@ py_binary(
     name = "use_example",
     srcs = ["use_example.py"],
     data = [":example"],
-    legacy_create_init = False,
+    # legacy_create_init = False,
     visibility = ["//visibility:public"],
 )
 
@@ -22,9 +22,10 @@ py_library(
     name = "paths_pylib",
     srcs = ["paths.py"],
 )
+
 cc_binary(
     name = "do_read_header",
-    deps = ["@pybind11"],
     srcs = ["do_read_header.cpp"],
     data = [":paths_pylib"],
+    deps = ["@pybind11"],
 )
